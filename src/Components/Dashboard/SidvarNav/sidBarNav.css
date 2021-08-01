@@ -1,0 +1,35 @@
+.nav-container{
+    /* background-color: #cfe6e2; */
+        height:80vh;
+        width:20%;
+        position: fixed;
+     
+
+}
+.nav-item {
+    margin-top: 20px !important;
+}
+.nav-item a{
+    text-decoration: none !important;
+    color:rgb(0, 0, 0)!important;
+
+    
+}
+.nav-pills {
+    display: flex!important;
+    padding: 15px 15px !important;
+
+
+
+
+
+}
+@media (max-width: 768px) {
+    .nav-container  {
+        height:inherit;
+        width:inherit;
+        position: static;
+        
+    }
+   
+}
