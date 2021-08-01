@@ -67,11 +67,12 @@ const[loggedInUser, setLoggedInUser]= useContext(UserContext)
         formData.append('price', +info.price);
         formData.append('duration', info.duration);
         formData.append('seller', info.seller);
+        formData.append('bestPrice', 0);
         formData.append('sellerEmail', loggedInUser.email);
 
 
 
-        fetch('http://localhost:5000/addProduct', {
+        fetch('https://limitless-wave-74804.herokuapp.com/addProduct', {
             method: 'POST',
             body: formData
         })

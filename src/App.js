@@ -17,7 +17,7 @@ import Login from './Components/Login/Login';
 import { createContext } from 'react';
 import PrivetRouter from './Components/PrivetRouter/PrivetRouter';
 import Profile from './Components/Dashboard/Profile/Profile';
-import AddProduct from './Components/AddProduct/AddProduct';
+// import AddProduct from './Components/AddProduct/AddProduct';
 import AddService from './Components/AddService/AddService';
 import Contest from './Components/Contest/Contest';
 
@@ -28,7 +28,7 @@ function App(props) {
   console.log({ loggedInUser });
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
-      <h3>email: {loggedInUser.email}</h3>
+   
       <Router>
         <Header></Header>
         <Switch>
@@ -61,9 +61,6 @@ function App(props) {
           </Route>
 
 
-          {/* <Route path="*">
-            <NotFound></NotFound>
-          </Route> */}
         </Switch>
       </Router>
     </UserContext.Provider>

@@ -24,7 +24,7 @@ const Shipment = () => {
       products: savedCart,
        shipping: shipmentData, 
        orderTime: new Date() }
-    fetch("http://localhost:5000/addOrder", {
+    fetch("https://limitless-wave-74804.herokuapp.com/addOrder", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

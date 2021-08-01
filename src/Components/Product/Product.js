@@ -9,9 +9,8 @@ import swal from 'sweetalert';
 import toast from 'react-hot-toast';
 import { UserContext } from '../../App';
 
-import PrivetRouter from '../PrivetRouter/PrivetRouter';
 
-const Product = ({ product, showAddToCart, showCountDown, handleAddProduct }) => {
+const Product = ({ product, showAddToCart, showCountDown, handleAddProduct ,SetReload }) => {
 
     const [loggedInUser, setLoggedInUser] = useContext(UserContext)
     const [newPrice, setNewPrice] = useState(null)
@@ -33,29 +32,29 @@ const Product = ({ product, showAddToCart, showCountDown, handleAddProduct }) =>
 
 
     const handleId = (id) => {
-        let newUserInfo = {...loggedInUser}
+        let newUserInfo = { ...loggedInUser }
         newUserInfo.id = id
         setLoggedInUser(newUserInfo)
-  
+
     }
 
 
     const handleBid = (id) => {
-      
-            const loading = toast.loading('Please wait...!');
-            fetch('http://localhost:5000/addBtd', {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "bidedId": loggedInUser.id,
-                    "biderEmail": loggedInUser.email,
-                    "bidedPrice": +newPrice
-                })
-
+       
+        const loading = toast.loading('Please wait...!');
+        fetch('https://limitless-wave-74804.herokuapp.com/addBtd', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                "bidedId": loggedInUser.id,
+                "biderEmail": loggedInUser.email,
+                "bidedPrice": +newPrice
             })
-                .then(res => res.json())
+
+        })
+            .then(res => res.json())
 
             .then(data => {
                 toast.dismiss(loading);
@@ -68,9 +67,33 @@ const Product = ({ product, showAddToCart, showCountDown, handleAddProduct }) =>
                 toast.dismiss(loading);
                 swal("Failed!", "Something went wrong! Please try again.", "error", { dangerMode: true });
             })
-
+    
+            if (product.bestPrice < +newPrice) {
+                let statusUpdatingInfo = {
+                    id: loggedInUser.id,
+                    status: +newPrice
+                };
+                fetch(`https://limitless-wave-74804.herokuapp.com/update/${loggedInUser.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(statusUpdatingInfo)
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result) {
+                            console.log({ result });
+                        }
+                    })
+            }
+        
+        
+            SetReload(true)
 
     }
+
+
+
+   
 
     return (
         <div className="product">
@@ -102,7 +125,7 @@ const Product = ({ product, showAddToCart, showCountDown, handleAddProduct }) =>
                                 <div className="btn btn-danger">cencel</div> :
                                 <div>
                                     {
-                                        product.bidedInfo[2] && <p class='text-danger'><strong> Max bided Price</strong>  ${product.bidedInfo[2]}</p>
+                                        product.bestPrice>0 && <p class='text-danger'><strong> Max bided Price</strong>  ${product.bestPrice}</p>
                                     }
                                     {
 

@@ -8,17 +8,18 @@ const Contest = () => {
     const [product, setProduct] = useState([])
     const [bids, setBids] = useState([])
     const [newProduct, setNewProduct] = useState([])
+    const [reload, SetReload] = useState(null)
     const [loggedInUser, setLoggedInUser] = useContext(UserContext)
 
 
 
 
     useEffect(() => {
-        fetch("http://localhost:5000/products")
+        fetch("https://limitless-wave-74804.herokuapp.com/products")
             .then(res => res.json())
             .then(data => setProduct(data))
-
-    }, [])
+            SetReload(null)
+    }, [reload])
 
 
     useEffect(() => {
@@ -35,14 +36,13 @@ const Contest = () => {
     }, [])
 
     useEffect(() => {
-        fetch("http://localhost:5000/bids")
+        fetch("https://limitless-wave-74804.herokuapp.com/bids")
             .then(res => res.json())
             .then(data => {
                 setBids(data)
 
            
-    const maxBidPrice = data.reduce((prev, current) => (prev.bidedPrice > current.bidedPrice) ? prev : current) 
-
+  
         const matchedProduct = data.filter(pd => pd.biderEmail === loggedInUser.email)
    
         if (matchedProduct) {
@@ -53,7 +53,7 @@ const Contest = () => {
                
                 if (productWithBid) {
 
-                    let newbid = [ productWithBid.bidedPrice, productWithBid.biderEmail ,maxBidPrice.bidedPrice] ;
+                    let newbid = [ productWithBid.bidedPrice, productWithBid.biderEmail ] ;
                     pd.bidedInfo = newbid;
                 
                   
@@ -82,7 +82,7 @@ const Contest = () => {
         <div>
        
             {
-                newProduct.map(pd => <Product product={pd} showCountDown={true} >
+                newProduct.map(pd => <Product product={pd} SetReload={SetReload} showCountDown={true} >
 
                 </Product>)
             }
